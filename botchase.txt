@@ -1,0 +1,19 @@
+"botchase"
+{
+    "base" "base"
+    "title" "Nextbot Chase"
+    "category" "pve"
+    "menusystem" "1"
+
+    "settings"
+	{
+		1
+		{
+			"name"		"sbox_playershurtplayers"
+			"text"		"Allow PvP"
+			"help"		"If enabled then players can hurt one another"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+	}
+}
