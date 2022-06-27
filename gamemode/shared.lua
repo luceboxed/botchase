@@ -1,7 +1,8 @@
-GM.Name = "Bot Chase"
-GM.Author = "Sukauti and Foahr"
+GM.Name = "Nextbot Chase"
+GM.Author = "Sukauti"
 GM.Email = "scout@spikeyscout.xyz"
 GM.Website = "spikeyscout.xyz"
+
 
 function GM:Initialize()
 	-- Do stuff

@@ -15,5 +15,14 @@
 			"type"		"CheckBox"
 			"default"	"0"
 		}
+		2
+		{
+			"name"		"pm_sv_disableadr"`
+			"text"		"Enable adrenaline"
+			"help"		"If enabled then players can use adrenaline, included in Wheatley's Parkour."
+			"type"		"CheckBox"
+			"default"	"0"
+			"singleplayer" "1"
+		}
 	}
 }
