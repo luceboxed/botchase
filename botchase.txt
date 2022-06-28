@@ -17,12 +17,12 @@
 		}
 		2
 		{
-			"name"		"pm_sv_disableadr"`
-			"text"		"Enable adrenaline"
-			"help"		"If enabled then players can use adrenaline, included in Wheatley's Parkour."
+			"name"		"pm_sv_disableadr"
+			"text"		"Disable adrenaline"
+			"help"		"If unchecked then players can use adrenaline to slow down time, included in Wheatley's Parkour."
 			"type"		"CheckBox"
-			"default"	"0"
-			"singleplayer" "1"
+			"default"	"1"
+			"singleplayer" 
 		}
 	}
 }
