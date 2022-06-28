@@ -7,5 +7,5 @@ function GM:ContextMenuOpen()
 end
 
 function GM:SpawnMenuOpen()
-    return false
+    return true
 end
