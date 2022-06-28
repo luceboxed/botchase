@@ -7,7 +7,6 @@ if !IsValid(ScoreboardDerma) then
     ScoreboardDerma = vgui.Create("DFrame")
     ScoreboardDerma:SetSize(750, 500)
     ScoreboardDerma:SetPos(ScrW() / 2 - 325, ScrH() / 2 - 250)
-    ScoreboardDerma:SetTitle("Nextbot Survival")
     ScoreboardDerma:SetDraggable(false)
     ScoreboardDerma:ShowCloseButton(false)
     ScoreboardDerma.Paint = function()
@@ -24,29 +23,32 @@ if !IsValid(ScoreboardDerma) then
 end
     if IsValid(ScoreboardDerma) then
         PlayerList:Clear()
-
+        ScoreboardDerma:SetTitle(GetHostName().." - "..#player.GetAll().."/"..game.MaxPlayers().." players - Nextbot Survival")
         local PLAYERS = player.GetAll()
-        table.sort( PLAYERS, function ( a, b ) return a:Deaths() > b:Deaths() end )
+        table.sort( PLAYERS, function ( a, b ) return a:Deaths() < b:Deaths() end )
         for k, v in pairs(PLAYERS) do
             local PlayerPanel = vgui.Create("DPanel", PlayerList)
             local Avatar = vgui.Create("AvatarImage", PlayerPanel)
             Avatar:SetSize(32, 32)
             Avatar:SetPlayer( v, 64)
-            Avatar:SetPos(0, 5)
+            Avatar:SetPos(5, 5)
             PlayerPanel:SetSize(PlayerList:GetWide(), 50)
             PlayerPanel:SetPos(0, 0)
             PlayerPanel.Paint = function()
                 draw.RoundedBox(0, 0, 0, PlayerPanel:GetWide(), PlayerPanel:GetTall(), Color(40, 40, 40, 200))  
                 draw.RoundedBox(0, 0, 49, PlayerPanel:GetWide(), 1, Color(255, 255, 255, 255))
 
-                draw.SimpleText(v:GetName(), "DermaDefault", 35, 10, Color(255,255,255))
+                draw.SimpleText(v:GetName(), "DermaDefault", 45, 10, Color(255,255,255))
                 draw.SimpleText("Deaths: "..v:Deaths(), "DermaDefault", PlayerList:GetWide() - 20, 10, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
-                draw.SimpleText("Kills:"..v:Frags(), "DermaDefault", PlayerList:GetWide() - 20, 25, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
-                
-                
+                draw.SimpleText(v:Ping().."ms", "DermaDefault", 75, 25, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+
+                if !v:Alive() then
+                    draw.SimpleText("DEAD", "DermaDefault", PlayerList:GetWide() / 2, 10, Color(255, 0, 0), TEXT_ALIGN_RIGHT)
+                end
+
                 end
                 local addbutton = vgui.Create("DButton", PlayerPanel)
-                addbutton:SetPos( PlayerList:GetWide() - 100, 25 )
+                addbutton:SetPos( PlayerList:GetWide() - 115, 25 )
                 addbutton:SetSize( 100, 20 )
                 addbutton:SetText( "Open Steam profile" )
                 addbutton.DoClick = function()
