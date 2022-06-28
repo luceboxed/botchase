@@ -43,6 +43,8 @@ end
                 draw.SimpleText(v:Ping().."ms", "DermaDefault", 75, 25, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
 
                 if !v:Alive() then
+                    draw.RoundedBox(0, 0, 49, PlayerPanel:GetWide(), 1, Color(100, 0, 0, 255))
+                    draw.RoundedBox(0, 0, 0, PlayerPanel:GetWide(), PlayerPanel:GetTall(), Color(50, 40, 40, 200))  
                     draw.SimpleText("DEAD", "DermaDefault", PlayerList:GetWide() / 2, 10, Color(255, 0, 0), TEXT_ALIGN_RIGHT)
                 end
 
