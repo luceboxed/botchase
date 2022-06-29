@@ -9,3 +9,5 @@ end
 function GM:SpawnMenuOpen()
     return true
 end
+
+print("cl_init.lua loaded")

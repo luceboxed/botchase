@@ -23,7 +23,7 @@ if !IsValid(ScoreboardDerma) then
 end
     if IsValid(ScoreboardDerma) then
         PlayerList:Clear()
-        ScoreboardDerma:SetTitle(GetHostName().." - "..#player.GetAll().."/"..game.MaxPlayers().." players - Nextbot Survival")
+        ScoreboardDerma:SetTitle(GetHostName().." - "..player.GetCount().."/"..game.MaxPlayers().." players - Nextbot Survival -".." "..game.GetMap())
         local PLAYERS = player.GetAll()
         table.sort( PLAYERS, function ( a, b ) return a:Deaths() < b:Deaths() end )
         for k, v in pairs(PLAYERS) do
@@ -75,3 +75,4 @@ function GM:ScoreboardHide()
     end
 end
 
+print("scoreboard loaded")

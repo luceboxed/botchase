@@ -4,9 +4,7 @@ AddCSLuaFile( "bothud.lua" )
 AddCSLuaFile( "scoreboard.lua" )
 
 include( "shared.lua" )
-include( "simple_nextbot.lua" )
-
-print("hello world!")
+--include( "simple_nextbot.lua" )
 
 
 local model = {"models/player/tfa_lwa_sucy_uni.mdl", "models/player/alyx.mdl", "models/player/barney.mdl", "models/player/breen.mdl", "models/player/charple.mdl", "models/player/p2_chell.mdl", "models/player/combine_soldier.mdl", "models/player/combine_super_soldier.mdl", "models/player/combine_soldier_prisonguard.mdl", "models/player/combine_soldier_prisonguard.mdl", "models/player/eli.mdl", "models/player/Group01/female_01.mdl", "models/player/Group01/female_02.mdl", "models/player/Group01/female_03.mdl", "models/player/Group01/female_04.mdl", "models/player/Group01/female_05.mdl", "models/player/Group01/female_06.mdl", "models/player/Group03/female_07.mdl", "models/player/Group03/male_01.mdl", "models/player/Group03/male_02.mdl", "models/player/Group03/male_03.mdl", "models/player/Group03/male_04.mdl", "models/player/Group03/male_05.mdl", "models/player/Group03/male_06.mdl", "models/player/Group03/male_07.mdl", "models/player/Group03/male_08.mdl", "models/player/Group03/male_09.mdl"}
@@ -40,25 +38,46 @@ function GM:PlayerSpawn(ply)
     ply:SetModel(model[ math.random( #model )])
     ply:UnSpectate()
 end
-
+local PLAYERS = player.GetAll()
 function GM:PlayerDeath(victim, inflictor, attacker)
     timer.Simple( 3, function()
         victim:Spectate(5)
         victim:SetObserverMode(5)
+        print(victim:GetObserverTarget())
     end)
-    timer.Simple( 11, function()
-        victim:Spawn()
+    timer.Simple( 30, function()
+       victim:Spawn()
     end)
-    
 end
 
 timer.Destroy("HintSystem_OpeningMenu");
 timer.Destroy("HintSystem_Annoy1");
 timer.Destroy("HintSystem_Annoy2");
 
+hook.Add( "KeyPress", "click_swap_spec_target", function( ply, key )
+    local PLAYERS = player.GetAll()
+    local AlivePlayers = {}
+    for k,v in pairs(PLAYERS) do
+        if v:Alive() then
+            table.insert(AlivePlayers, v)
+        end
+    end
+	if (key == IN_ATTACK) and ply:GetObserverMode() >= 1 then
+        ply:SpectateEntity(AlivePlayers[ math.random( #AlivePlayers )])
+    end
+end )
+
+hook.Add( "KeyPress", "click_swap_spec_mode", function( ply, key )
+    if (key == IN_ATTACK2) and ply:GetObserverMode() == 5 then
+        ply:SetObserverMode(4)
+    elseif (key == IN_ATTACK2) and ply:GetObserverMode() == 4 then
+        ply:SetObserverMode(5)
+    end
+end )
 
 hook.Add( "PlayerSwitchFlashlight", "BlockFlashLight", function( ply, enabled )
 	return ply:Alive() -- this is the only way i can get the flashlight to work lmao
 end )
 
 
+print("init.lua loaded")
