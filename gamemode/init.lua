@@ -8,6 +8,7 @@ include( "shared.lua" )
 
 
 local model = {"models/player/tfa_lwa_sucy_uni.mdl", "models/player/alyx.mdl", "models/player/barney.mdl", "models/player/breen.mdl", "models/player/charple.mdl", "models/player/p2_chell.mdl", "models/player/combine_soldier.mdl", "models/player/combine_super_soldier.mdl", "models/player/combine_soldier_prisonguard.mdl", "models/player/combine_soldier_prisonguard.mdl", "models/player/eli.mdl", "models/player/Group01/female_01.mdl", "models/player/Group01/female_02.mdl", "models/player/Group01/female_03.mdl", "models/player/Group01/female_04.mdl", "models/player/Group01/female_05.mdl", "models/player/Group01/female_06.mdl", "models/player/Group03/female_07.mdl", "models/player/Group03/male_01.mdl", "models/player/Group03/male_02.mdl", "models/player/Group03/male_03.mdl", "models/player/Group03/male_04.mdl", "models/player/Group03/male_05.mdl", "models/player/Group03/male_06.mdl", "models/player/Group03/male_07.mdl", "models/player/Group03/male_08.mdl", "models/player/Group03/male_09.mdl"}
+roundstarttime = CurTime()
 
 timer.Create("passiveregen", 3, 0, function()
     local HUMANPLAYERS = player.GetHumans() 
@@ -89,18 +90,18 @@ function GM:PlayerDeath(victim, inflictor, attacker)
         end
     end
     if (#AlivePlayers == 1) then
-        print("Player "..AlivePlayers[1]:Nick().." won!")
+        timer.Simple(5, function() roundstarttime = CurTime() end)
+        print(AlivePlayers[1]:Nick().. " wins!\nWin #"..AlivePlayers[1]:GetNWInt("wins").."\nRound time: "..math.Round((CurTime() - roundstarttime)/60, 1).." minutes")
         AlivePlayers[1]:SetNWInt("wins", AlivePlayers[1]:GetNWInt("wins") + 1)
         timer.Simple(5, (function() for k,v in ipairs(PLAYERS) do
             v:Spawn()
             timer.Remove("respawntimer")
-            timer.Remove("spectatetimer")
         end
         timer.Create("respawnwaves", 3, 3, function()
             local PLAYERS = player.GetAll()
             local deadplayers = {}
             for k,v in ipairs(PLAYERS) do
-                if !v:Alive() then
+                if !v:Alive() or v:GetObserverMode() >= 1 then
                     table.insert(deadplayers, v)
                 end
             end
@@ -112,11 +113,11 @@ function GM:PlayerDeath(victim, inflictor, attacker)
         end))
     end
 
-    timer.Create("spectatetimer", 3, 1, function()
+    timer.Simple(3, function()
         victim:Spectate(5)
         victim:SetObserverMode(5)
         victim:SpectateEntity(attacker)
-        print(victim:GetObserverTarget())
+        print(tostring(victim:Nick()).." is now spectating "..tostring(victim:GetObserverTarget()))
         timer.Create("respawntimer", 3000, 1, function()
             victim:Spawn()
          end)
