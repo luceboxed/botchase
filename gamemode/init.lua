@@ -82,6 +82,7 @@ end
 
 function GM:PlayerDeath(victim, inflictor, attacker)
     victim:Flashlight ( false )
+    victim:StripWeapons()
     local PLAYERS = player.GetAll()
     local AlivePlayers = {}
     for k,v in ipairs(PLAYERS) do
@@ -94,6 +95,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
         print(AlivePlayers[1]:Nick().. " wins!\nWin #"..AlivePlayers[1]:GetNWInt("wins").."\nRound time: "..math.Round((CurTime() - roundstarttime)/60, 1).." minutes")
         AlivePlayers[1]:SetNWInt("wins", AlivePlayers[1]:GetNWInt("wins") + 1)
         timer.Simple(5, (function() for k,v in ipairs(PLAYERS) do
+            v:StripWeapons()
             v:Spawn()
             timer.Remove("respawntimer")
         end
