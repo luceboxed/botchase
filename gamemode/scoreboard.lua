@@ -22,10 +22,17 @@ if !IsValid(ScoreboardDerma) then
     PlayerList:SetPos(0, 0)
 end
     if IsValid(ScoreboardDerma) then
-        PlayerList:Clear()
-        ScoreboardDerma:SetTitle(GetHostName().." - "..player.GetCount().."/"..game.MaxPlayers().." players - Nextbot Survival -".." "..game.GetMap())
         local PLAYERS = player.GetAll()
-        table.sort( PLAYERS, function ( a, b ) return a:Deaths() < b:Deaths() end )
+        local AlivePlayers = {}
+        for k,v in ipairs(PLAYERS) do
+            if v:Alive() then
+                table.insert(AlivePlayers, v)
+            end
+        end
+        PlayerList:Clear()
+        ScoreboardDerma:SetTitle(GetHostName().." - "..player.GetCount().."/"..game.MaxPlayers().." players ("..#AlivePlayers.. " alive) - Nextbot Survival -".." "..game.GetMap())
+        ScoreboardDerma:SetIcon("materials/icons16/folder_user.png")
+        table.sort( PLAYERS, function ( a, b ) return a:GetObserverMode() < b:GetObserverMode() end )
         for k, v in pairs(PLAYERS) do
             local PlayerPanel = vgui.Create("DPanel", PlayerList)
             local Avatar = vgui.Create("AvatarImage", PlayerPanel)
@@ -39,7 +46,37 @@ end
                 draw.RoundedBox(0, 0, 49, PlayerPanel:GetWide(), 1, Color(255, 255, 255, 255))
 
                 draw.SimpleText(v:GetName(), "DermaDefault", 45, 10, Color(255,255,255))
-                draw.SimpleText("Deaths: "..v:Deaths(), "DermaDefault", PlayerList:GetWide() - 20, 10, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+                draw.SimpleText("Wins: "..v:GetNWInt("wins"), "DermaDefault", PlayerList:GetWide() - 20, 10, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+                if v:Ping() == 0 then
+                    local BotIcon = vgui.Create("DImage", PlayerPanel)
+                    BotIcon:SetSize(16, 16)
+                    BotIcon:SetPos(75, 25)
+                    BotIcon:SetImage("icons16/computer.png")
+                end
+                if v:Ping() <= 100 and v:Ping() != 0 then
+                    local LowPingIcon = vgui.Create("DImage", PlayerPanel)
+                    LowPingIcon:SetSize(16, 16)
+                    LowPingIcon:SetPos(75, 25)
+                    LowPingIcon:SetImage("icons64/low_ping.png")
+                end
+                if v:Ping() <= 150 and v:Ping() > 100 then
+                    local MediumPingIcon = vgui.Create("DImage", PlayerPanel)
+                    MediumPingIcon:SetSize(16, 16)
+                    MediumPingIcon:SetPos(75, 25)
+                    MediumPingIcon:SetImage("icons64/med_ping.png")
+                end
+                if v:Ping() <= 200 and v:Ping() > 150 then
+                    local HighPingIcon = vgui.Create("DImage", PlayerPanel)
+                    HighPingIcon:SetSize(16, 16)
+                    HighPingIcon:SetPos(75, 25)
+                    HighPingIcon:SetImage("icons64/high_ping.png")
+                end
+                if v:Ping() > 200 then
+                    local VeryHighPingIcon = vgui.Create("DImage", PlayerPanel)
+                    VeryHighPingIcon:SetSize(16, 16)
+                    VeryHighPingIcon:SetPos(75, 25)
+                    VeryHighPingIcon:SetImage("icons64/vhigh_ping.png")
+                end
                 draw.SimpleText(v:Ping().."ms", "DermaDefault", 75, 25, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
 
                 if !v:Alive() and v:GetObserverMode() <= 0 then
@@ -56,9 +93,10 @@ end
 
                 end
                 local addbutton = vgui.Create("DButton", PlayerPanel)
-                addbutton:SetPos( PlayerList:GetWide() - 115, 25 )
-                addbutton:SetSize( 100, 20 )
+                addbutton:SetPos( PlayerList:GetWide() - 130, 25 )
+                addbutton:SetSize( 125, 20 )
                 addbutton:SetText( "Open Steam profile" )
+                addbutton:SetIcon( "icon16/user.png" )
                 addbutton.DoClick = function()
                     v:ShowProfile()
             end

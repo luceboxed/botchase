@@ -22,7 +22,7 @@
 			"help"		"If unchecked then players can use adrenaline to slow down time, included in Wheatley's Parkour."
 			"type"		"CheckBox"
 			"default"	"1"
-			"singleplayer" 
+			"singleplayer" "yes"
 		}
 	}
 }
