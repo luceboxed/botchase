@@ -74,8 +74,8 @@ function HUD()
         draw.RoundedBox(0, 10, ScrH() - 25, 100 * 2.25, 15, Color(0, 255, 0, 30))
         draw.RoundedBox(0, 10, ScrH()- 25, math.Clamp(client:Health(), 0, 100) * 2.25, 15, Color(30, 255, 30, 255))
         draw.RoundedBox(0, 10, ScrH()- 25, math.Clamp(client:Health() - 100, 0, 100) * 2.25, 15, Color(30, 30, 255, 60))
-
-        local PLAYERS = player.GetAll()
+    end
+    local PLAYERS = player.GetAll()
         local AlivePlayers = {}
         for k,v in ipairs(PLAYERS) do
             if v:Alive() then
@@ -93,7 +93,6 @@ function HUD()
                 win_posted_chat = true
                 timer.Simple(7, function() win_posted_chat = false end)
             end
-    end
     end
 end
 hook.Add("HUDPaint", "BotHud", HUD)
