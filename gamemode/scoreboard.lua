@@ -47,6 +47,13 @@ end
 
                 draw.SimpleText(v:GetName(), "DermaDefault", 45, 10, Color(255,255,255))
                 draw.SimpleText("Wins: "..v:GetNWInt("wins"), "DermaDefault", PlayerList:GetWide() - 20, 10, Color(255, 255, 255), TEXT_ALIGN_RIGHT)
+                if v:IsAdmin() then
+                    local AdminIcon = vgui.Create("DImage", PlayerPanel)
+                    AdminIcon:SetSize(16, 16)
+                    AdminIcon:SetPos(25, 25)
+                    AdminIcon:SetImage("materials/icons16/shield.png")
+                end
+                    
                 if v:Ping() == 0 then
                     local BotIcon = vgui.Create("DImage", PlayerPanel)
                     BotIcon:SetSize(16, 16)
